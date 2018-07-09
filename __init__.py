@@ -44,6 +44,7 @@ modules = [
     "ui_panels",
     "ui_menus",
     "lightloader",
+    "envelopeloader",
     "mask_tools",
     "display_operators",
     "utils",
@@ -147,6 +148,12 @@ def register():
             description = "resolution of the new mesh",
             default = 4,
             min = 0
+        )
+
+        bpy.types.Scene.envelope_preset = bpy.props.EnumProperty(
+            name = "Envelope Preset",
+            description = "The base armature.",
+            items = lambda self, context: [(item, item, "") for item in envelopeloader.get_filenames()]
         )
         
         bpy.types.Object.is_envelope_builder = bpy.props.BoolProperty(default = False)
