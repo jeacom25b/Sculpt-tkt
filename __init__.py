@@ -23,7 +23,7 @@ bl_info = {
     "name": "SculpTKt",
     "description": "Sculpting and Boolean utils",
     "author": "Jean Da Costa Machado",
-    "version": (1, 0, 2),
+    "version": (1, 0, 3),
     "blender": (2, 79, 0),
     "location": "View3D",
     "wiki_url": "",
