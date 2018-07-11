@@ -41,6 +41,7 @@ modules = [
     "booleans",
     "remesh_optimized",
     "enveloper",
+    "field_remesh",
     "ui_panels",
     "ui_menus",
     "lightloader",
