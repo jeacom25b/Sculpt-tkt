@@ -46,17 +46,17 @@ class FlowToolsBool(bpy.types.Panel):
 
         layout.prop(context.scene, "multi_boolean_solver")
 
-        row = layout.row(align=True)
+        col = layout.column(align=True)
 
-        op = row.operator("sculptkt.multi_object_boolean", text="Add", icon="MOD_ARRAY")
+        op = col.operator("sculptkt.multi_object_boolean", text="Weld", icon="MOD_ARRAY")
         op.operation = "UNION"
         op.solver = context.scene.multi_boolean_solver
 
-        op = row.operator("sculptkt.multi_object_boolean", text="Sub", icon="MOD_BOOLEAN")
+        op = col.operator("sculptkt.multi_object_boolean", text="Subtract", icon="MOD_BOOLEAN")
         op.operation = "DIFFERENCE"
         op.solver = context.scene.multi_boolean_solver
 
-        op = row.operator("sculptkt.multi_object_boolean", text="Intersect", icon="MOD_MULTIRES")
+        op = col.operator("sculptkt.multi_object_boolean", text="Intersect", icon="MOD_MULTIRES")
         op.operation = "INTERSECT"
         op.solver = context.scene.multi_boolean_solver
 

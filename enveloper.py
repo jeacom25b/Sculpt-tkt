@@ -28,9 +28,7 @@ class ArmatureMesser:
         else:
             return cls._ball_model
 
-    # Experimetal function for custom preview, Not in use.
     def __get_balls(self, bone, step_size=0.1, min_step_num=10):
-
         current_step_size = step_size
         if bone.length / step_size < min_step_num:
             current_step_size = bone.length / min_step_num
@@ -74,35 +72,6 @@ class ArmatureMesser:
 
         bpy.context.active_object.data.resolution = resolution
         bpy.ops.object.convert(target="MESH")
-
-    # Experimetal function for custom preview, Not in use.
-    def preview(self, target_mesh, step_size=0.5, min_step_num=5):
-        data = self.__load_mesh_ball()
-        edit = self.armature.mode == "EDIT"
-        bm = bmesh.new()
-        if edit:
-            bones = self.armature.data.edit_bones
-        else:
-            bones = self.armature.data.bones
-
-        for bone in bones:
-            if edit:
-                matrix = bone.matrix
-            else:
-                matrix = bone.matrix_local
-
-            for location, radius in self.__get_balls(bone, step_size, min_step_num):
-                vecs = [Vector(v) for v in data["verts"]]
-                for v in vecs:
-                    v.rotate(matrix)
-                    v *= radius
-                    v += location
-
-                verts = [bm.verts.new(v) for v in vecs]
-                for face in data["faces"]:
-                    bm.faces.new([verts[i] for i in face])
-        bm.to_mesh(target_mesh)
-
 
 class ConvertEnvelopeToMesh(bpy.types.Operator):
     bl_idname = "sculptkt.convert_envelope_to_mesh"

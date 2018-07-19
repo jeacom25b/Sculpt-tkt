@@ -71,6 +71,7 @@ def sculpting_tools(pie):
     col.scale_x = 0.7
     sub_sculpt_brush_tools(col)
     sub_sculpt_dyntopo_tools(col)
+    sub_sculpt_symmetry(col)
 
     for i in range(separation):
         row.separator()
@@ -90,14 +91,9 @@ def sculpting_tools(pie):
     pie.separator()
     pie.separator()
 
-    #    pie.operator("sculptkt.optimized_remesh", text = "Remesh", icon="MOD_REMESH")
-    #    pie.operator("sculptkt.decimate", text = "Decimate", icon="MOD_DECIM").popup = True
-    #    pie.operator("sculptkt.extract", icon="MOD_DISPLACE")
-    box = pie.box()
-    box.menu("SCULPT_MT_symmetry_options", text="Brush Symmetry", icon="MOD_MIRROR")
-    box = pie.box()
-    box.label("Dyntopo Symmetry")
-    sub_sculpt_symmetry(box)
+    sub_brush_symmetry(pie)
+
+    sub_sculpt_texture_tiling(pie)
 
 
 def edit_tools(pie):
@@ -194,19 +190,22 @@ def sub_sculpt_texture_tools(layout):
     col.prop(tool_settings.sculpt.brush.texture_slot, "use_random")
 
 
-def sub_sculpt_curve_tools(layout):
-    col = layout.column()
-    box = col.box()
-    box.label("curve")
-    tool_settings = bpy.context.tool_settings
-
-    box.template_curve_mapping(tool_settings.sculpt.brush, "curve")
+def sub_sculpt_texture_tiling(layout):
+    box = layout.box()
+    texture = bpy.context.tool_settings.sculpt.brush.texture_slot
+    row = box.row()
+    col = row.column()
+    col.prop(texture, "offset")
+    col = row.column()
+    col.prop(texture, "scale")
 
 
 def sub_sculpt_symmetry(layout):
+    box = layout.box()
+    box.label("Dyntopo Symmetry")
     tool_settings = bpy.context.tool_settings
-    layout.prop(tool_settings.sculpt, "symmetrize_direction")
-    layout.operator("sculpt.symmetrize")
+    box.prop(tool_settings.sculpt, "symmetrize_direction")
+    box.operator("sculpt.symmetrize")
 
 
 class FlowTools2(bpy.types.Menu):
@@ -239,16 +238,13 @@ class FlowTools2(bpy.types.Menu):
         elif edit_mode:
             edit_tools(pie)
 
-
-class SymmetryOptions(bpy.types.Menu):
-    bl_idname = "SCULPT_MT_symmetry_options"
-    bl_label = "Symmetry Options"
-
-    def draw(self, context):
-        layout = self.layout
-        layout.prop(context.tool_settings.sculpt, "use_symmetry_x")
-        layout.prop(context.tool_settings.sculpt, "use_symmetry_y")
-        layout.prop(context.tool_settings.sculpt, "use_symmetry_z")
+def sub_brush_symmetry(layout):
+    box = layout.box()
+    box.label("Brush Symmetry")
+    tool_settings = bpy.context.tool_settings.sculpt
+    box.prop(tool_settings, "use_symmetry_x")
+    box.prop(tool_settings, "use_symmetry_y")
+    box.prop(tool_settings, "use_symmetry_z")
 
 
 class Booleans(bpy.types.Menu):
