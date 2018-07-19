@@ -12,10 +12,8 @@ current_default_preset_name = "current default"
 locked_names = [current_default_preset_name, blender_default_preset_name]
 
 path = os.path.dirname(os.path.realpath(__file__))
-print(path)
 path = os.path.join(path, "light_presets")
 if not os.path.isdir(path):
-    print("mkdir")
     os.mkdir(path)
 
 def get_filenames():

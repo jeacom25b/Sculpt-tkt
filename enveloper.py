@@ -89,7 +89,7 @@ class ConvertEnvelopeToMesh(bpy.types.Operator):
     resolution = bpy.props.FloatProperty(
         name="Resolution",
         description="The metaball resolution",
-        default=100
+        default=200
     )
 
     step_size = bpy.props.FloatProperty(
@@ -123,7 +123,7 @@ class ConvertEnvelopeToMesh(bpy.types.Operator):
 
         armature = context.active_object
         converter = ArmatureMesser(armature)
-        converter.convert(self.step_size, self.min_steps, 1 / self.resolution, self.radius_multiplier)
+        converter.convert(self.step_size, self.min_steps, 1 / self.resolution * max(armature.dimensions), self.radius_multiplier)
 
         last_cursor_pos = context.scene.cursor_location
         context.scene.cursor_location = armature.location
