@@ -105,3 +105,4 @@ venv.bak/
 .idea/workspace.xml
 *.pyc
 *.pyc
+*.xml

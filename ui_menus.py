@@ -192,6 +192,7 @@ def sub_sculpt_texture_tools(layout):
 
 def sub_sculpt_texture_tiling(layout):
     box = layout.box()
+    box.label("TextureTilling")
     texture = bpy.context.tool_settings.sculpt.brush.texture_slot
     row = box.row()
     col = row.column()
@@ -237,6 +238,7 @@ class FlowTools2(bpy.types.Menu):
 
         elif edit_mode:
             edit_tools(pie)
+
 
 def sub_brush_symmetry(layout):
     box = layout.box()
