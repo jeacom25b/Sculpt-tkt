@@ -1,8 +1,27 @@
+'''
+Copyright (C) 2018 Jean Da Costa machado.
+Jean3dimensional@gmail.com
+
+Created by Jean Da Costa machado
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+'''
+
 import bpy
 import json
 import os
 from bpy_extras.io_utils import ExportHelper, ImportHelper
-
 
 light_settings = bpy.context.user_preferences.system.solid_lights
 current_default = "[]"
@@ -16,44 +35,46 @@ path = os.path.join(path, "light_presets")
 if not os.path.isdir(path):
     os.mkdir(path)
 
+
 def get_filenames():
     all_files = sorted(os.listdir(path))
-    
+
     actual_presets = []
-    
+
     for item in all_files:
         if item.endswith(".json_lightpreset"):
             if os.path.isfile(os.path.join(path, item)):
                 actual_presets.append(item[:-len(".json_lightpreset")])
-    
+
     return actual_presets
+
 
 def list_presets_callback(self, context):
     presets = get_filenames()
-    
-    items =  []
-    
+
+    items = []
+
     for locked_name in locked_names:
         items.append((locked_name, locked_name, locked_name))
-    
+
     for preset in presets:
         if preset not in locked_names:
             items.append((preset, preset, preset))
     return items
 
+
 def load_unpack(name):
     if name == current_default_preset_name:
         unpack(current_default)
         return
-    
+
     filepath = os.path.join(path, name + ".json_lightpreset")
-    
+
     with open(filepath, "r") as file:
         unpack(file.read())
-    
 
 
-def save_as (name, external_path = None):
+def save_as(name, external_path=None):
     if not external_path:
         filepath = os.path.join(path, name + ".json_lightpreset")
         with open(filepath, "w") as file:
@@ -71,9 +92,8 @@ def delete_file(name):
 
 
 def pack():
-    
     lights = []
-    
+
     for light in light_settings:
         d = {}
         d["use"] = float(light.use)
@@ -87,13 +107,14 @@ def pack():
         d["spec_coll_g"] = float(light.specular_color[1])
         d["spec_coll_b"] = float(light.specular_color[2])
         lights.append(d)
-    
-    return json.dumps(lights, sort_keys = False, indent = 4)
+
+    return json.dumps(lights, sort_keys=False, indent=4)
+
+
 current_default = pack()
 
 
 def unpack(string):
-    
     lights = json.loads(string)
     for light, d in zip(light_settings, lights):
         light.use = d["use"]
@@ -106,19 +127,19 @@ def unpack(string):
         light.specular_color[0] = d["spec_coll_r"]
         light.specular_color[1] = d["spec_coll_g"]
         light.specular_color[2] = d["spec_coll_b"]
-            
+
 
 class SavePreset(bpy.types.Operator):
     bl_idname = "sculptkt.save_light_preset"
     bl_label = "Save Preset"
     bl_description = ""
     bl_options = {"REGISTER", "INTERNAL"}
-    
+
     name = bpy.props.StringProperty(
-        name = "Name",
-        description = "The name for the preset, will overwrite if already exist.",
+        name="Name",
+        description="The name for the preset, will overwrite if already exist.",
     )
-    
+
     @classmethod
     def poll(cls, context):
         return True
@@ -126,9 +147,9 @@ class SavePreset(bpy.types.Operator):
     def execute(self, context):
         if self.name not in locked_names:
             save_as(self.name)
-        
+
         return {"FINISHED"}
-    
+
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
@@ -139,12 +160,12 @@ class DeletePreset(bpy.types.Operator):
     bl_label = "Delete Preset"
     bl_description = ""
     bl_options = {"REGISTER", "INTERNAL"}
-    
+
     name = bpy.props.StringProperty(
-        name = "Name",
-        description = "The name for the preset, will overwrite if already exist.",
+        name="Name",
+        description="The name for the preset, will overwrite if already exist.",
     )
-    
+
     @classmethod
     def poll(cls, context):
         return True
@@ -153,16 +174,15 @@ class DeletePreset(bpy.types.Operator):
         if self.name not in locked_names:
             delete_file(self.name)
         return {"FINISHED"}
-    
+
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
-    
+
     def draw(self, context):
         layout = self.layout
         layout.label("Are you sure you want to delete?")
         layout.prop(self, "name")
-
 
 
 class ExportPreset(bpy.types.Operator, ExportHelper):
@@ -170,17 +190,17 @@ class ExportPreset(bpy.types.Operator, ExportHelper):
     bl_label = "Export Light Preset"
     bl_description = "Save to a external file"
     bl_options = {"REGISTER"}
-    
+
     filename_ext = ".json"
-    
+
     filter_glob = bpy.props.StringProperty(
-        default = "*.json",
-        options = {"HIDDEN"},
-        maxlen = 255
+        default="*.json",
+        options={"HIDDEN"},
+        maxlen=255
     )
-    
+
     def execute(self, context):
-        save_as(None, external_path = self.filepath)
+        save_as(None, external_path=self.filepath)
         return {"FINISHED"}
 
 
@@ -189,20 +209,20 @@ class ImportPreset(bpy.types.Operator, ImportHelper):
     bl_label = "Import Light Preset"
     bl_description = "Load a external light preset in to the scene."
     bl_options = {"REGISTER"}
-    
+
     filename_ext = ".json"
-    
+
     filter_glob = bpy.props.StringProperty(
-            default = "*.json",
-            options = {'HIDDEN'},
-            maxlen = 255,
-            )
-    
+        default="*.json",
+        options={'HIDDEN'},
+        maxlen=255,
+    )
+
     def execute(self, context):
         with open(self.filepath, "r") as file:
             try:
                 unpack(file.read())
             except:
                 self.report({"ERROR"}, self.filepath + " is not a light preset file.")
-            
+
         return {"FINISHED"}
