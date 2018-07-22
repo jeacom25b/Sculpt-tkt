@@ -215,7 +215,7 @@ class ImportPreset(bpy.types.Operator, ImportHelper):
     filter_glob = bpy.props.StringProperty(
         default="*.json",
         options={'HIDDEN'},
-        maxlen=255,
+        maxlen=255
     )
 
     def execute(self, context):
