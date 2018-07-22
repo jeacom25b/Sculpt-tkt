@@ -18,7 +18,6 @@ Created by Jean Da Costa machado
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-
 bl_info = {
     "name": "SculpTKt",
     "description": "Sculpting and Boolean utils",
@@ -27,11 +26,9 @@ bl_info = {
     "blender": (2, 79, 0),
     "wiki_url": "",
     "category": "Sculpt",
-    "location": "3D View > Tool shelf > Flow tools \ 3D View > Alt + W"}
-
+    "location": "3D View > Tool shelf > Sculptkt \  Alt + W"}
 
 import bpy
-
 
 # load and reload submodules
 ##################################
@@ -71,6 +68,7 @@ def add_envelope_armature(self, context):
     self.layout.operator("sculptkt.add_envelope_human",
                          text="Envelope Human Base", icon="BONE_DATA")
 
+
 # register
 ##################################
 
@@ -79,10 +77,11 @@ import traceback
 
 keymaps = []
 
+
 def register():
     try:
         bpy.utils.register_module(__name__)
-        
+
         for module in imported_modules:
             try:
                 module.register()
@@ -111,19 +110,19 @@ def register():
             items=[("BMESH", "Bmesh", "Bmesh"), ("CARVE", "Carve", "Carve")],
             default="CARVE"
         )
-        
+
         bpy.types.Scene.multi_boolean_solver = bpy.props.EnumProperty(
             name="Solver",
             description="Which method to use, Carve fails less often but is slower",
             items=[("BMESH", "Bmesh", "Bmesh"), ("CARVE", "Carve", "Carve")],
             default="BMESH"
         )
-        
+
         bpy.types.Scene.use_slash_ciclic = bpy.props.BoolProperty(
-            name = "Closed Ends",
-            description = "Make closed ends. (Usefull for digging holes on meshes)",
-            default = False
-            
+            name="Closed Ends",
+            description="Make closed ends. (Usefull for digging holes on meshes)",
+            default=False
+
         )
 
         bpy.types.Scene.lightloader_preset = bpy.props.EnumProperty(
@@ -133,34 +132,34 @@ def register():
             update=lambda self, context: lightloader.load_unpack(
                 context.scene.lightloader_preset)
         )
-        
+
         bpy.types.Scene.decimate_factor = bpy.props.FloatProperty(
             name="Ratio",
             description="How much to recuce",
             default=0.7,
-            min = 0.0000001,
-            max = 1.0
+            min=0.0000001,
+            max=1.0
         )
-        
+
         bpy.types.Scene.remesh_depth = bpy.props.IntProperty(
-            name = "Octree Depth",
-            description = "resolution of the new mesh",
-            default = 4,
-            min = 0
+            name="Octree Depth",
+            description="resolution of the new mesh",
+            default=4,
+            min=0
         )
 
         bpy.types.Scene.envelope_preset = bpy.props.EnumProperty(
-            name = "Envelope Preset",
-            description = "The base armature.",
-            items = lambda self, context: [(item, item, "") for item in envelopeloader.get_filenames()]
+            name="Envelope Preset",
+            description="The base armature.",
+            items=lambda self, context: [(item, item, "") for item in envelopeloader.get_filenames()]
         )
-        
-        bpy.types.Object.is_envelope_builder = bpy.props.BoolProperty(default = False)
-    
-        km = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name = "3D View", space_type = "VIEW_3D")
+
+        bpy.types.Object.is_envelope_builder = bpy.props.BoolProperty(default=False)
+
+        km = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name="3D View", space_type="VIEW_3D")
         keymaps.append(km)
-        
-        kmi = km.keymap_items.new("wm.call_menu_pie", type = "W", alt = True, value = "PRESS")
+
+        kmi = km.keymap_items.new("wm.call_menu_pie", type="W", alt=True, value="PRESS")
         kmi.properties.name = "OBJECT_MT_flow_tools"
     except:
         traceback.print_exc()
@@ -173,7 +172,7 @@ def unregister():
                 module.unregister()
             except AttributeError:
                 pass
-        
+
         bpy.utils.unregister_module(__name__)
         del bpy.types.Scene.slash_cut_thickness
         del bpy.types.Scene.slash_cut_distance
@@ -184,7 +183,7 @@ def unregister():
         del bpy.types.Scene.use_slash_ciclic
         del bpy.types.Scene.remesh_depth
         del bpy.types.Object.is_envelope_builder
-        
+
         for km in keymaps:
             bpy.context.window_manager.keyconfigs.addon.keymaps.remove(km)
 
