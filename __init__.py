@@ -25,7 +25,6 @@ bl_info = {
     "author": "Jean Da Costa Machado",
     "version": (1, 0, 4),
     "blender": (2, 79, 0),
-    "location": "View3D",
     "wiki_url": "",
     "category": "Sculpt",
     "location": "3D View > Tool shelf > Flow tools \ 3D View > Alt + W"}
