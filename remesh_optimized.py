@@ -17,9 +17,9 @@ Created by Jean Da Costa machado
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
-
 import bpy
 import bmesh
+from mathutils import Vector
 from .utils import dyntopo_compatible_execute
 
 
@@ -41,7 +41,7 @@ class MeshMesser:
     def back_to_mesh(self):
         self.bm.to_mesh(self.mesh)
 
-    def _check_mergeable_face(self, face):
+    def _check_mergeable_face(self, face, main_axis, vert_with_3_edges):
         mergeable = True
         tirade = False
         for edge in face.edges:
@@ -65,7 +65,8 @@ class MeshMesser:
             dz = delta.z
 
             bigger_axis = "NoAxis"
-            if dx > dy and dx > dx:
+
+            if dx > dy and dx > dz:
                 bigger_axis = "X"
             elif dy > dx and dy > dz:
                 bigger_axis = "Y"
@@ -82,9 +83,12 @@ class MeshMesser:
         return mergeable
 
     def convoluted_clean(self, main_axis="Z"):
-
+        self.bm.verts.ensure_lookup_table()
+        self.bm.edges.ensure_lookup_table()
+        self.bm.faces.ensure_lookup_table()
         bm = self.bm
-        to_merge = []
+        seen_verts = set()
+        targetmap = {}
         for face in bm.faces:
 
             if len(face.verts) == 4:
@@ -92,64 +96,66 @@ class MeshMesser:
                 hexagonal_pattern = 0
 
                 for vert in face.verts:
-                    if len(vert.link_edges) == 3:
+                    if len(vert.link_edges) == 3 and vert not in seen_verts:
                         vert_with_3_edges.append(vert)
                     elif len(vert.link_edges) == 6:
                         hexagonal_pattern += 1
 
                 if len(vert_with_3_edges) == 2:
+                    v0 = vert_with_3_edges[0]
+                    v1 = vert_with_3_edges[1]
 
                     join_verts_now = True
 
                     if hexagonal_pattern >= 2:
-                        join_verts_now = self._check_mergeable_face(face)
+                        join_verts_now = self._check_mergeable_face(face, main_axis, vert_with_3_edges)
+
+                    for edge in v0.link_edges:
+                        if edge.other_vert(v0) == v1:
+                            join_verts_now = False
 
                     if join_verts_now:
-                        # location = vert_with_3_edges[0].co + vert_with_3_edges[1].co
                         location = face.calc_center_median()
-                        vert_with_3_edges[0].co = location
-                        vert_with_3_edges[1].co = location
-                        to_merge.extend(vert_with_3_edges)
+                        v0.co = location
+                        v1.co = location
+                        seen_verts.add(v1)
+                        seen_verts.add(v0)
+                        targetmap[v1] = v0
 
-        bmesh.ops.remove_doubles(bm, verts=list(set(to_merge)), dist=0.00000001)
-        bmesh.ops.smooth_vert(bm, verts=bm.verts, factor=1, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+        bmesh.ops.weld_verts(bm, targetmap=targetmap)
+        bmesh.ops.smooth_vert(bm, verts=bm.verts, factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+
 
 
 class OptimizedRemesh(bpy.types.Operator):
     bl_idname = "sculptkt.optimized_remesh"
     bl_label = "Advanced Remesh"
-    bl_description = "Recreates the mesh into quads and adds a multires modifier (Use Alt + S to scale the spheres)"
+    bl_description = "Recreates the mesh into quads and adds a multires modifier"
     bl_options = {"REGISTER", "UNDO"}
 
     octree_depth = bpy.props.IntProperty(
         name="Octree Depth",
-        description="resolution of the new mesh",
+        description="Resolution of the new mesh, CAUTION! This value is exponential",
         default=4,
         min=0
     )
 
-    cleaning_iterations = bpy.props.IntProperty(
-        name="Cleaning Iterations",
-        description="How many times the cleaner will analize the mesh, bigger = slower",
-        default=3,
-        min=0
-    )
-
-    use_multires = bpy.props.BoolProperty(
-        name="Use Multires",
-        description="Add a multiresolution modifier",
-        default=False
-    )
-
     multires_res = bpy.props.IntProperty(
-        name="Multiresolution",
-        description="the subdivision level of the Multiresolution",
-        default=2,
+        name="Subdivisions",
+        description="the subdivision level of the Multiresolution modifier, 0=Disabled",
+        default=0,
         min=0
+    )
+
+    clean_mesh = bpy.props.BoolProperty(
+        name="Clean Result",
+        description="Simplify the new mesh and make it smoother",
+        default=True
     )
 
     smooth_shading = bpy.props.BoolProperty(
         name="Smooth Shading",
+        description="Smooth the normals",
         default=False
     )
 
@@ -186,7 +192,7 @@ class OptimizedRemesh(bpy.types.Operator):
 
         bm_messer = MeshMesser(new_ob)
 
-        for _ in range(self.cleaning_iterations):
+        if self.clean_mesh:
             bm_messer.convoluted_clean()
             bm_messer.back_to_mesh()
 
@@ -196,7 +202,7 @@ class OptimizedRemesh(bpy.types.Operator):
             sk_md.target = ob
             bpy.ops.object.modifier_apply(modifier=sk_md.name)
 
-        if self.use_multires:
+        if self.multires_res > 0:
             md = new_ob.modifiers.new(type="MULTIRES", name="Multiresolution")
             for _ in range(self.multires_res):
                 bpy.ops.object.multires_subdivide(modifier=md.name)
@@ -216,6 +222,7 @@ class OptimizedRemesh(bpy.types.Operator):
 
         if self.smooth_shading:
             bpy.ops.object.shade_smooth()
+
 
         return {"FINISHED"}
 
