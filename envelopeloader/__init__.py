@@ -37,13 +37,12 @@ def delete_armature(name):
 def get_filenames():
     all_files = sorted(os.listdir(path))
 
-    actual_presets = []
+    actual_presets = ["Choose a preset"]
 
     for item in all_files:
         if item.endswith(".blend"):
             if os.path.isfile(os.path.join(path, item)):
                 actual_presets.append(item[:-len(".blend")])
-
     return actual_presets
 
 
@@ -51,7 +50,7 @@ class SaveArmature(bpy.types.Operator):
     bl_idname = "sculptkt.save_envelope_armature"
     bl_label = "Save Selected Armature"
     bl_description = ""
-    bl_options = {"REGISTER", "UNDO"}
+    bl_options = {"REGISTER"}
 
     name = bpy.props.StringProperty(
         name="Name",
@@ -71,6 +70,9 @@ class SaveArmature(bpy.types.Operator):
     def execute(self, context):
         if self.name in get_filenames() or not self.name:
             return {"CANCELLED"}
+        elif self.name == "Choose a preset":
+            self.report({"ERROR"}, "Sorry, you cant save using this name, its used for internal stuff.")
+
         save_armature(self.name, context.active_object)
         return {"FINISHED"}
 
@@ -103,6 +105,9 @@ class LoadArmature(bpy.types.Operator):
         return True
 
     def execute(self, context):
+        if self.preset_name == "Choose a prest":
+            return {"CANCELLED"}
+
         filepath = os.path.join(path, "{}.blend".format(self.preset_name))
         if os.path.isfile(filepath):
             with bpy.data.libraries.load(filepath) as(data_from, data_to):
