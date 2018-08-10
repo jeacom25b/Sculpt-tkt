@@ -42,6 +42,7 @@ class StrokeMesser:
                 color.color = (1, 0.5, 0)
 
             self.layer = gp.layers.new("Slash boolean stroke")
+            self.layer.line_change = 2
             frame = self.layer.frames.new(context.scene.frame_current)
             self.stroke = frame.strokes.new("slash cut")
             self.stroke.draw_mode = "3DSPACE"
@@ -56,6 +57,7 @@ class StrokeMesser:
             color.color = (1, 0.5, 0)
 
             self.layer = gp.layers.new("Slash boolean stroke")
+            self.layer.line_change = 2
             frame = self.layer.frames.new(context.scene.frame_current)
             self.stroke = frame.strokes.new("slash cut")
             self.stroke.draw_mode = "3DSPACE"
@@ -63,6 +65,7 @@ class StrokeMesser:
         self.gp = gp
         self.bm = bmesh.new()
         self.last_mouse_location = Vector()
+        self.lmb = False
 
     def remove_stroke(self):
         self.gp.layers.remove(self.layer)
@@ -72,19 +75,26 @@ class StrokeMesser:
         region_3d = context.region_data
         co = event.mouse_region_x, event.mouse_region_y
         location_vec = Vector((event.mouse_region_x, event.mouse_region_y, 0))
-        mouse_delta_length = (location_vec - self.last_mouse_location).length
+        mouse_delta = (location_vec - self.last_mouse_location)
+        delta_length = mouse_delta.length
 
         camera_origin = view3d_utils.region_2d_to_origin_3d(region, region_3d, co)
         ray = view3d_utils.region_2d_to_vector_3d(region, region_3d, co)
         cursor = context.scene.cursor_location
         far = (camera_origin - cursor).length
 
-        if (event.type, event.value) in (("LEFTMOUSE", "PRESS"), ("MOUSEMOVE", "PRESS")):
-            if mouse_delta_length > 10:
+        if event.type == "LEFTMOUSE" and event.value == "PRESS":
+            self.lmb = True
+
+        if event.type == "LEFTMOUSE" and event.value == "RELEASE":
+            self.lmb = False
+
+        if self.lmb:
+            if delta_length > 5:
                 self.stroke.points.add()
                 self.last_mouse_location = location_vec
-        point_location = ray * far + camera_origin
-        self.stroke.points[-1].co = point_location
+
+        self.stroke.points[-1].co = ray * far + camera_origin
 
 
     def create_mesh(self, context, ciclic = False):
