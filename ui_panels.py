@@ -96,7 +96,7 @@ class FlowToolsBool(bpy.types.Panel):
         slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
 
         slash_operator = col.operator(
-            "sculptkt.slash_bool", text="Mesh Cutter Slash", icon="SCULPTMODE_HLT")
+            "sculptkt.slash_bool", text="Mesh Cutter Slash", icon="MESH_DATA")
 
         slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
