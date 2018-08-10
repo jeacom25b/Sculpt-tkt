@@ -65,13 +65,12 @@ import bpy
 def add_envelope_armature(self, context):
     self.layout.operator("sculptkt.add_envelope_armature",
                          text="Envelope Bone", icon="BONE_DATA")
-    self.layout.operator("sculptkt.add_envelope_human",
+    self.layout.operator("sculptkt.load_envelope_armature",
                          text="Envelope Human Base", icon="BONE_DATA")
 
 
 # register
 ##################################
-
 
 import traceback
 
@@ -94,13 +93,6 @@ def register():
             name="Cut Thickness",
             description="The spacing of the cut though the mesh",
             default=0.001,
-            min=0.000001
-        )
-
-        bpy.types.Scene.slash_cut_distance = bpy.props.FloatProperty(
-            name="Cut Distance",
-            description="The distance the cut spams over the stroke location",
-            default=50,
             min=0.000001
         )
 
@@ -175,7 +167,6 @@ def unregister():
 
         bpy.utils.unregister_module(__name__)
         del bpy.types.Scene.slash_cut_thickness
-        del bpy.types.Scene.slash_cut_distance
         del bpy.types.Scene.slash_boolean_solver
         del bpy.types.Scene.multi_boolean_solver
         del bpy.types.Scene.lightloader_preset

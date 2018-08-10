@@ -291,40 +291,17 @@ class Slash(bpy.types.Menu):
             "sculptkt.slash_bool", text="Draw Slash", icon="SCULPTMODE_HLT")
 
         slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
         slash_operator.cut_using_mesh = False
         slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
-        slash_operator.draw_mode = "DRAW"
 
         slash_operator = layout.operator(
-            "sculptkt.slash_bool", text="Line Slash", icon="SCULPTMODE_HLT")
+            "sculptkt.slash_bool", text="Mesh Cutter Slash", icon="SCULPTMODE_HLT")
 
         slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
-        slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
-        slash_operator.cut_using_mesh = False
-        slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
-        slash_operator.draw_mode = "DRAW_STRAIGHT"
-
-        slash_operator = layout.operator(
-            "sculptkt.slash_bool", text="Polygon Slash", icon="SCULPTMODE_HLT")
-
-        slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
-        slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
-        slash_operator.cut_using_mesh = False
-        slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
-        slash_operator.draw_mode = "DRAW_POLY"
-
-        slash_operator = layout.operator(
-            "sculptkt.slash_bool", text="Mesh cutter Slash", icon="MESH_DATA")
-
-        slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
         slash_operator.cut_using_mesh = True
-        slash_operator.keep_objects = False
+        slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
 
         layout.menu("VIEW3D_MT_slash_options", icon="MODIFIER")
 
@@ -336,6 +313,5 @@ class SlashOptions(bpy.types.Menu):
     def draw(self, context):
         layout = self.layout
         layout.prop(bpy.context.scene, "slash_cut_thickness")
-        layout.prop(bpy.context.scene, "slash_cut_distance")
         layout.prop(bpy.context.scene, "use_slash_ciclic")
         layout.prop(bpy.context.scene, "slash_boolean_solver", text="")

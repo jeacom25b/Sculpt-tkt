@@ -84,7 +84,6 @@ class FlowToolsBool(bpy.types.Panel):
 
         col.prop(bpy.context.scene, "slash_boolean_solver", text="")
         col.prop(bpy.context.scene, "slash_cut_thickness")
-        col.prop(bpy.context.scene, "slash_cut_distance")
         col.prop(bpy.context.scene, "use_slash_ciclic", toggle=True)
         col.separator()
 
@@ -92,40 +91,17 @@ class FlowToolsBool(bpy.types.Panel):
             "sculptkt.slash_bool", text="Draw Slash", icon="SCULPTMODE_HLT")
 
         slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
         slash_operator.cut_using_mesh = False
         slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
-        slash_operator.draw_mode = "DRAW"
 
         slash_operator = col.operator(
-            "sculptkt.slash_bool", text="Line Slash", icon="SCULPTMODE_HLT")
+            "sculptkt.slash_bool", text="Mesh Cutter Slash", icon="SCULPTMODE_HLT")
 
         slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
-        slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
-        slash_operator.cut_using_mesh = False
-        slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
-        slash_operator.draw_mode = "DRAW_STRAIGHT"
-
-        slash_operator = col.operator(
-            "sculptkt.slash_bool", text="Polygon Slash", icon="SCULPTMODE_HLT")
-
-        slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
-        slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
-        slash_operator.cut_using_mesh = False
-        slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
-        slash_operator.draw_mode = "DRAW_POLY"
-
-        slash_operator = col.operator(
-            "sculptkt.slash_bool", text="Mesh cutter Slash", icon="MESH_DATA")
-
-        slash_operator.cut_thickness = bpy.context.scene.slash_cut_thickness
-        slash_operator.cut_distance = bpy.context.scene.slash_cut_distance
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
         slash_operator.cut_using_mesh = True
-        slash_operator.keep_objects = False
+        slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
 
 
 class MaskTools(bpy.types.Panel):

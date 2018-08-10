@@ -21,24 +21,78 @@ Created by Jean Da Costa machado
 from mathutils import Vector
 import bpy
 import bmesh
+from bpy_extras import view3d_utils
 from .utils import dyntopo_compatible_execute
 
 
-class StrokeMesser():
+class StrokeMesser:
 
-    def __init__(self, stroke, ciclic=False, cut_distance=50):
-        self.stroke = stroke
+    def __init__(self, context):
+        if context.scene.grease_pencil:
+            gp = context.scene.grease_pencil
+
+            if not gp.palettes:
+                palette = gp.palettes.new("Pallete")
+            else:
+                palette = gp.palettes.active
+
+            if not "slash cut" in palette.colors:
+                color = palette.colors.new()
+                color.name = "slash cut"
+                color.color = (1, 0.5, 0)
+
+            self.layer = gp.layers.new("Slash boolean stroke")
+            frame = self.layer.frames.new(context.scene.frame_current)
+            self.stroke = frame.strokes.new("slash cut")
+            self.stroke.draw_mode = "3DSPACE"
+            self.stroke.points.add()
+        else:
+            gp = bpy.data.grease_pencil.new("Grease Pencil")
+            context.scene.grease_pencil = gp
+
+            palette = gp.palettes.new("Pallete")
+            color = palette.colors.new()
+            color.name = "slash cut"
+            color.color = (1, 0.5, 0)
+
+            self.layer = gp.layers.new("Slash boolean stroke")
+            frame = self.layer.frames.new(context.scene.frame_current)
+            self.stroke = frame.strokes.new("slash cut")
+            self.stroke.draw_mode = "3DSPACE"
+            self.stroke.points.add()
+        self.gp = gp
         self.bm = bmesh.new()
-        self.ciclic = ciclic
+        self.last_mouse_location = Vector()
 
-    def create_mesh(self):
+    def remove_stroke(self):
+        self.gp.layers.remove(self.layer)
 
-        direction = Vector((0, 0, 1))
-        direction.rotate(bpy.context.region_data.view_rotation)
+    def update(self, context, event):
+        region = context.region
+        region_3d = context.region_data
+        co = event.mouse_region_x, event.mouse_region_y
+        location_vec = Vector((event.mouse_region_x, event.mouse_region_y, 0))
+        mouse_delta_length = (location_vec - self.last_mouse_location).length
+
+        camera_origin = view3d_utils.region_2d_to_origin_3d(region, region_3d, co)
+        ray = view3d_utils.region_2d_to_vector_3d(region, region_3d, co)
+        cursor = context.scene.cursor_location
+        far = (camera_origin - cursor).length
+
+        if (event.type, event.value) in (("LEFTMOUSE", "PRESS"), ("MOUSEMOVE", "PRESS")):
+            if mouse_delta_length > 10:
+                self.stroke.points.add()
+                self.last_mouse_location = location_vec
+        point_location = ray * far + camera_origin
+        self.stroke.points[-1].co = point_location
+
+
+    def create_mesh(self, context, ciclic = False):
+        region = context.region
+        region_3d = context.region_data
+        end = context.space_data.clip_end
+        start = context.space_data.clip_start
         bm = self.bm
-
-        normal = Vector()
-        last_vector = None
 
         last_vert1 = None
         last_vert2 = None
@@ -46,8 +100,13 @@ class StrokeMesser():
         first_vert2 = None
 
         for point in self.stroke.points:
-            vert1 = bm.verts.new((direction * -500) + point.co)
-            vert2 = bm.verts.new((direction * 500) + point.co)
+            screen_projection = view3d_utils.location_3d_to_region_2d(region, region_3d, point.co)
+            view_origin = view3d_utils.region_2d_to_origin_3d(region, region_3d, screen_projection)
+            point_vector = view3d_utils.region_2d_to_vector_3d(region, region_3d, screen_projection)
+
+            vert1 = bm.verts.new((point_vector * start) + view_origin)
+            vert2 = bm.verts.new((point_vector * end) + view_origin)
+
             if not first_vert1 and not first_vert2:
                 first_vert1 = vert1
                 first_vert2 = vert2
@@ -56,7 +115,7 @@ class StrokeMesser():
             last_vert1 = vert1
             last_vert2 = vert2
 
-        if self.ciclic and len(self.stroke.points) > 2:
+        if ciclic and len(self.stroke.points) > 2:
             bm.faces.new((last_vert1, last_vert2, first_vert2, first_vert1))
 
         bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces)
@@ -64,7 +123,6 @@ class StrokeMesser():
     def dump_to_mesh(self, obj):
 
         if obj.type == "MESH":
-            self.create_mesh()
             self.bm.to_mesh(obj.data)
         else:
             raise Exception("Something went wrong with the stroke messer,", obj)
@@ -76,19 +134,10 @@ class SlashBoolean(bpy.types.Operator):
     bl_description = "Cut the mesh by drawing strokes, (Might be slow on dense meshes)"
     bl_options = {"REGISTER", "UNDO"}
 
-    drawing = False
-
     cut_thickness = bpy.props.FloatProperty(
         name="Cut Thickness",
         description="The spacing of the cut though the mesh",
         default=0.001,
-        min=0.000001
-    )
-
-    cut_distance = bpy.props.FloatProperty(
-        name="Cut Distance",
-        description="The distance the cut spams over the stroke location",
-        default=50,
         min=0.000001
     )
 
@@ -117,21 +166,10 @@ class SlashBoolean(bpy.types.Operator):
         default=False
     )
 
-    draw_mode = bpy.props.EnumProperty(
-        name="Mode",
-        items=[
-            ("NONE", "None", "None"),
-            ("DRAW", "Draw", "Draw"),
-            ("DRAW_STRAIGHT", "Line", "Line"),
-            ("DRAW_POLY", "Poly", "Poly")],
-        default="NONE"
-    )
-
     def draw(self, context):
         layout = self.layout
 
         layout.prop(self, "cut_thickness")
-        layout.prop(self, "cut_distance")
         layout.prop(self, "boolean_solver")
         layout.prop(self, "is_ciclic")
         layout.prop(self, "keep_objects")
@@ -140,49 +178,44 @@ class SlashBoolean(bpy.types.Operator):
     @classmethod
     def poll(cls, context):
         if context.active_object:
-            return context.active_object.type == "MESH"
+            return context.active_object.type == "MESH" and not context.active_object.mode == "EDIT"
 
     def invoke(self, context, event):
-        if context.tool_settings.grease_pencil_source == "OBJECT":
-            self.report(type={"ERROR"},
-                        message="Grease Pencil data source must be 'SCENE'\n Please change it on the Grease Pencil tab")
-            return {"CANCELLED"}
-
-        if self.draw_mode != "NONE":
-            context.window_manager.modal_handler_add(self)
+        if self.cut_using_mesh:
+            return self.execute(context)
+        else:
+            self.stroke_messer = StrokeMesser(context)
+            self._handler = context.window_manager.modal_handler_add(self)
             return {"RUNNING_MODAL"}
-        return self.execute(context)
 
     def modal(self, context, event):
+        self.stroke_messer.update(context, event)
+        context.area.header_text_set("Left Click/Drag: Draw,   Left CLick: Creates sharp corners"
+                              "  Right Click or Return/Enter: Finish Cut   Esc: Cancel")
+        if event.type == "ESC":
+            self.stroke_messer.remove_stroke()
+            context.area.header_text_set()
+            return {"CANCELLED"}
+        elif event.type == "LEFTMOUSE":
+            return {"RUNNING_MODAL"}
 
-        if not self.drawing:
-            bpy.ops.gpencil.draw('INVOKE_DEFAULT', mode=self.draw_mode)
-            self.drawing = True
-
-        if self.draw_mode in ("DRAW_STRAIGHT", "DRAW"):
-            if event.type in "LEFTMOUSE" and event.value == "RELEASE":
-                return self.execute(context)
-
-        if event.type in ["RET", "NUMPAD_ENTER", "RIGHTMOUSE", "MIDDLEMOUSE"]:
+        elif event.type in {"RIGHTMOUSE", "RETURN"}:
+            context.area.header_text_set()
             return self.execute(context)
 
-        return {"RUNNING_MODAL"}
+        context.area.tag_redraw()
+
+        return {"PASS_THROUGH"}
 
     @dyntopo_compatible_execute
     def execute(self, context):
 
         if context.scene.grease_pencil and not self.cut_using_mesh:
-
             cutter_data = bpy.data.meshes.new("Cutter_mesh")
             cutter_object = bpy.data.objects.new("cutter", cutter_data)
 
-            if len(context.scene.grease_pencil.layers.active.active_frame.strokes) > 0:
-                stroke = context.scene.grease_pencil.layers.active.active_frame.strokes[-1]
-            else:
-                return {"CANCELLED"}
-
-            stroke_messer = StrokeMesser(stroke, self.is_ciclic, self.cut_distance)
-            stroke_messer.dump_to_mesh(cutter_object)
+            self.stroke_messer.create_mesh(context, self.is_ciclic)
+            self.stroke_messer.dump_to_mesh(cutter_object)
 
             md_sldf = cutter_object.modifiers.new(type="SOLIDIFY", name="thin_solid")
             md_sldf.offset = 0.0
@@ -203,7 +236,7 @@ class SlashBoolean(bpy.types.Operator):
             bpy.ops.mesh.separate(type="LOOSE")
             bpy.ops.object.mode_set(mode="OBJECT")
 
-            context.scene.grease_pencil.layers.active.active_frame.strokes.remove(stroke_messer.stroke)
+            self.stroke_messer.remove_stroke()
 
         if self.cut_using_mesh:
 
