@@ -58,7 +58,6 @@ class Extract(bpy.types.Operator):
         mask = bm.verts.layers.paint_mask.verify()
 
         try:
-
             for vert in bm.verts:
                 if vert[mask] < 0.5:
                     bm.verts.remove(vert)
@@ -95,18 +94,18 @@ class Extract(bpy.types.Operator):
         return {"RUNNING_MODAL"}
 
     def modal(self, context, event):
-
+        region_3d = context.region_data
         if event.type == "MOUSEMOVE":
             mouse_delta = self.last_mouse_y - event.mouse_y
             self.last_mouse_y = event.mouse_y
 
             if self.counter == 0:
-                self.modifier.thickness += mouse_delta / (50 if not event.shift else 500)
+                self.modifier.thickness += mouse_delta / (1024 if not event.shift else 8000) * region_3d.view_distance
                 if self.modifier.thickness < 0.00000000001:
                     self.modifier.thickness = 0.00000000001
 
             elif self.counter == 1:
-                self.modifier.factor -= mouse_delta / (300 if not event.shift else 1000)
+                self.modifier.factor -= mouse_delta / (2000 if not event.shift else 4000) * region_3d.view_distance
                 if self.modifier.factor < 0.00000000001:
                     self.modifier.factor = 0.00000000001
                 elif self.modifier.factor > 2:
