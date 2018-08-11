@@ -294,6 +294,7 @@ class Slash(bpy.types.Menu):
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
         slash_operator.cut_using_mesh = False
         slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
+        slash_operator.delete_small_pieces = bpy.context.scene.delete_slash_smallest_pieces
 
         slash_operator = layout.operator(
             "sculptkt.slash_bool", text="Mesh Cutter Slash", icon="MESH_DATA")
@@ -314,4 +315,5 @@ class SlashOptions(bpy.types.Menu):
         layout = self.layout
         layout.prop(bpy.context.scene, "slash_cut_thickness")
         layout.prop(bpy.context.scene, "use_slash_ciclic")
+        layout.prop(bpy.context.scene, "delete_slash_smallest_pieces")
         layout.prop(bpy.context.scene, "slash_boolean_solver", text="")

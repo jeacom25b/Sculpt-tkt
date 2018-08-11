@@ -117,6 +117,13 @@ def register():
 
         )
 
+        bpy.types.Scene.delete_slash_smallest_pieces = bpy.props.BoolProperty(
+            name="Delete Small Pieces",
+            description="Delete the pieces that are smaller and only keep the bigger side of the"
+                        " resulting cut (Based on total volume)",
+            default=True
+        )
+
         bpy.types.Scene.lightloader_preset = bpy.props.EnumProperty(
             name="Preset",
             description="Which solid lighting preset to choose from",

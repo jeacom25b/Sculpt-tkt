@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="520b0322-e1dd-4f4d-83d8-4246552e9264" name="Default" comment="Cleanups on envelopeloader code">
+    <list default="true" id="520b0322-e1dd-4f4d-83d8-4246552e9264" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/__init__.py" afterPath="$PROJECT_DIR$/__init__.py" />
       <change beforePath="$PROJECT_DIR$/booleans.py" afterPath="$PROJECT_DIR$/booleans.py" />
@@ -21,8 +21,8 @@
       <file leaf-file-name="booleans.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/booleans.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
-              <caret line="74" column="64" lean-forward="true" selection-start-line="74" selection-start-column="64" selection-end-line="74" selection-end-column="64" />
+            <state relative-caret-position="273">
+              <caret line="178" column="23" lean-forward="false" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="23" />
               <folding>
                 <element signature="e#765#793#0" expanded="true" />
               </folding>
@@ -30,33 +30,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mask_tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mask_tools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1827">
-              <caret line="28" column="22" lean-forward="false" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
-              <folding>
-                <element signature="e#765#775#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/envelopeloader/__init__.py">
+        <entry file="file://$PROJECT_DIR$/lightloader/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="609">
-              <caret line="80" column="48" lean-forward="false" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ui_menus.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ui_menus.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2659">
-              <caret line="293" column="39" lean-forward="false" selection-start-line="293" selection-start-column="39" selection-end-line="293" selection-end-column="39" />
+            <state relative-caret-position="664">
+              <caret line="225" column="78" lean-forward="false" selection-start-line="225" selection-start-column="78" selection-end-line="225" selection-end-column="78" />
               <folding />
             </state>
           </provider>
@@ -65,8 +43,18 @@
       <file leaf-file-name="ui_panels.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ui_panels.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="97" column="8" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="103" selection-end-column="69" />
+            <state relative-caret-position="0">
+              <caret line="72" column="56" lean-forward="false" selection-start-line="72" selection-start-column="56" selection-end-line="72" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ui_menus.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ui_menus.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="433">
+              <caret line="291" column="0" lean-forward="true" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -75,8 +63,8 @@
       <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/__init__.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="328">
-              <caret line="44" column="22" lean-forward="false" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="22" />
+            <state relative-caret-position="517">
+              <caret line="119" column="52" lean-forward="false" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -123,10 +111,10 @@
         <option value="$PROJECT_DIR$/lightloader/__init__.py" />
         <option value="$PROJECT_DIR$/remesh_optimized.py" />
         <option value="$PROJECT_DIR$/envelopeloader/__init__.py" />
-        <option value="$PROJECT_DIR$/ui_panels.py" />
         <option value="$PROJECT_DIR$/booleans.py" />
-        <option value="$PROJECT_DIR$/ui_menus.py" />
         <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/ui_panels.py" />
+        <option value="$PROJECT_DIR$/ui_menus.py" />
       </list>
     </option>
   </component>
@@ -170,6 +158,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -183,23 +172,10 @@
               <item name="Sculpt_tkt" type="47feb1d3:ProjectViewModuleNode" />
               <item name="Sculpt_tkt" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Sculpt_tkt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Sculpt_tkt" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="Sculpt_tkt" type="462c0819:PsiDirectoryNode" />
-              <item name="envelopeloader" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Sculpt_tkt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Sculpt_tkt" type="47feb1d3:ProjectViewModuleNode" />
-              <item name="Sculpt_tkt" type="462c0819:PsiDirectoryNode" />
-              <item name="lightloader" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -335,7 +311,28 @@
       <option name="project" value="LOCAL" />
       <updated>1533774819313</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Improve and simplify draw slash">
+      <created>1533930298605</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1533930298605</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Tweak slash' stroke messer">
+      <created>1533932324086</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1533932324086</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Fix Icons on mesh cutter slash">
+      <created>1533932708516</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1533932708516</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -354,13 +351,13 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16164052" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32963374" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -415,7 +412,10 @@
     <MESSAGE value="Update Readme.md" />
     <MESSAGE value="updade readme.md" />
     <MESSAGE value="Cleanups on envelopeloader code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanups on envelopeloader code" />
+    <MESSAGE value="Improve and simplify draw slash" />
+    <MESSAGE value="Tweak slash' stroke messer" />
+    <MESSAGE value="Fix Icons on mesh cutter slash" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix Icons on mesh cutter slash" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -664,7 +664,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="21">
           <caret line="171" column="36" lean-forward="false" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -672,23 +671,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="21">
           <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lightloader/__init__.py">
+    <entry file="file://$PROJECT_DIR$/envelopeloader/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="664">
-          <caret line="225" column="83" lean-forward="false" selection-start-line="225" selection-start-column="79" selection-end-line="225" selection-end-column="83" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ui_panels.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="97" column="8" lean-forward="true" selection-start-line="97" selection-start-column="8" selection-end-line="103" selection-end-column="69" />
-          <folding />
+        <state relative-caret-position="336">
+          <caret line="67" column="72" lean-forward="false" selection-start-line="67" selection-start-column="64" selection-end-line="67" selection-end-column="72" />
         </state>
       </provider>
     </entry>
@@ -696,42 +685,47 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1827">
           <caret line="28" column="22" lean-forward="false" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
-          <folding>
-            <element signature="e#765#775#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/envelopeloader/__init__.py">
+    <entry file="file://$PROJECT_DIR$/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="609">
-          <caret line="80" column="48" lean-forward="false" selection-start-line="80" selection-start-column="26" selection-end-line="80" selection-end-column="48" />
+        <state relative-caret-position="517">
+          <caret line="119" column="52" lean-forward="false" selection-start-line="119" selection-start-column="24" selection-end-line="119" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/booleans.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="74" column="64" lean-forward="true" selection-start-line="74" selection-start-column="64" selection-end-line="74" selection-end-column="64" />
+        <state relative-caret-position="273">
+          <caret line="178" column="23" lean-forward="false" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="23" />
           <folding>
             <element signature="e#765#793#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/__init__.py">
+    <entry file="file://$PROJECT_DIR$/lightloader/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="44" column="22" lean-forward="false" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="22" />
+        <state relative-caret-position="664">
+          <caret line="225" column="78" lean-forward="false" selection-start-line="225" selection-start-column="78" selection-end-line="225" selection-end-column="78" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ui_panels.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="72" column="56" lean-forward="false" selection-start-line="72" selection-start-column="56" selection-end-line="72" selection-end-column="56" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ui_menus.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2659">
-          <caret line="293" column="39" lean-forward="false" selection-start-line="293" selection-start-column="39" selection-end-line="293" selection-end-column="39" />
+        <state relative-caret-position="433">
+          <caret line="291" column="0" lean-forward="true" selection-start-line="291" selection-start-column="0" selection-end-line="291" selection-end-column="0" />
           <folding />
         </state>
       </provider>

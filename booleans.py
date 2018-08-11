@@ -160,7 +160,7 @@ class SlashBoolean(bpy.types.Operator):
 
     is_ciclic = bpy.props.BoolProperty(
         name="Ciclic",
-        description="Make the cut wrap around (Clossed piece)",
+        description="Make the cut wrap around (Circular cuts)",
         default=False
     )
 
@@ -176,19 +176,29 @@ class SlashBoolean(bpy.types.Operator):
         default=False
     )
 
+    delete_small_pieces = bpy.props.BoolProperty(
+        name="Delete Small Pieces",
+        description="Delete the pieces that are smaller and only keep the bigger side of the"
+                    " resulting cut (Based on total volume)",
+        default = True
+    )
+
     def draw(self, context):
         layout = self.layout
 
         layout.prop(self, "cut_thickness")
         layout.prop(self, "boolean_solver")
         layout.prop(self, "is_ciclic")
-        layout.prop(self, "keep_objects")
-        layout.prop(self, "cut_using_mesh")
+        if self.cut_using_mesh:
+            layout.prop(self, "keep_objects")
+        else:
+            layout.prop(self, "delete_small_pieces")
 
     @classmethod
     def poll(cls, context):
         if context.active_object:
-            return context.active_object.type == "MESH" and not context.active_object.mode == "EDIT"
+            if context.area.type == "VIEW_3D":
+                return context.active_object.type == "MESH" and not context.active_object.mode == "EDIT"
 
     def invoke(self, context, event):
         if self.cut_using_mesh:
@@ -221,6 +231,10 @@ class SlashBoolean(bpy.types.Operator):
     def execute(self, context):
 
         if context.scene.grease_pencil and not self.cut_using_mesh:
+            for ob in context.selected_objects:
+                if not ob == context.active_object:
+                    ob.select = False
+
             cutter_data = bpy.data.meshes.new("Cutter_mesh")
             cutter_object = bpy.data.objects.new("cutter", cutter_data)
 
@@ -247,6 +261,24 @@ class SlashBoolean(bpy.types.Operator):
             bpy.ops.object.mode_set(mode="OBJECT")
 
             self.stroke_messer.remove_stroke()
+
+            if self.delete_small_pieces:
+                bigger_volume = -9999999999999
+                bigger = None
+                for ob in context.selected_objects:
+                    bm = bmesh.new()
+                    bm.from_mesh(ob.data)
+                    vol = bm.calc_volume()
+                    if vol > bigger_volume:
+                        bigger_volume = vol
+                        bigger = ob
+                for ob in context.selected_objects:
+                    if not ob == bigger:
+                        data = ob.data
+                        bpy.data.meshes.remove(data)
+                        bpy.data.objects.remove(ob)
+                context.scene.objects.active = bigger
+
 
         if self.cut_using_mesh:
 

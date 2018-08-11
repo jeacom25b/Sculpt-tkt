@@ -85,6 +85,7 @@ class FlowToolsBool(bpy.types.Panel):
         col.prop(bpy.context.scene, "slash_boolean_solver", text="")
         col.prop(bpy.context.scene, "slash_cut_thickness")
         col.prop(bpy.context.scene, "use_slash_ciclic", toggle=True)
+        col.prop(bpy.context.scene, "delete_slash_smallest_pieces", toggle=True)
         col.separator()
 
         slash_operator = col.operator(
@@ -94,6 +95,7 @@ class FlowToolsBool(bpy.types.Panel):
         slash_operator.boolean_solver = bpy.context.scene.slash_boolean_solver
         slash_operator.cut_using_mesh = False
         slash_operator.is_ciclic = bpy.context.scene.use_slash_ciclic
+        slash_operator.delete_small_pieces = bpy.context.scene.delete_slash_smallest_pieces
 
         slash_operator = col.operator(
             "sculptkt.slash_bool", text="Mesh Cutter Slash", icon="MESH_DATA")
