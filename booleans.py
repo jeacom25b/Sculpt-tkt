@@ -225,7 +225,7 @@ class SlashBoolean(bpy.types.Operator):
 
         context.area.tag_redraw()
 
-        return {"PASS_THROUGH"}
+        return {"RUNNING_MODAL"}
 
     @dyntopo_compatible_execute
     def execute(self, context):
