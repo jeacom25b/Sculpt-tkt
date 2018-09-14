@@ -184,6 +184,7 @@ class SlashBoolean(bpy.types.Operator):
     )
 
     def draw(self, context):
+        return
         layout = self.layout
 
         layout.prop(self, "cut_thickness")
@@ -219,7 +220,7 @@ class SlashBoolean(bpy.types.Operator):
         elif event.type == "LEFTMOUSE":
             return {"RUNNING_MODAL"}
 
-        elif event.type in {"RIGHTMOUSE", "RETURN"}:
+        elif event.type in {"RIGHTMOUSE", "RET"}:
             context.area.header_text_set()
             return self.execute(context)
 
