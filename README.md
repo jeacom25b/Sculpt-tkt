@@ -14,4 +14,4 @@ Sculpt Tool Kit is well, a kit which contains the following tools
 * A nice pie menu that englobes the whole addon
 
 Ps.
-Since with the new Blender 2.8 many of the features contained in this addon will no longer be nescessary, I plan to include advanced retopology tools, that allow for not only fast but semi-automatic quad placing with field guidelines.
+Since with the new Blender 2.8 many of the features contained in this addon will no longer be necessary, I plan to include advanced retopology tools, that allow for not only fast but semi-automatic quad placing with field guidelines.
